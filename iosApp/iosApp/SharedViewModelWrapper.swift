@@ -4,32 +4,38 @@ class SharedViewModelWrapper: ObservableObject {
     
     private var viewModel: SharedViewModel
 
-    @Published var state: String = "123"
     @Published var isLoading: Bool = false
+    @Published var viewState: ViewState = ViewState.companion.create()
 
     init(viewModel: SharedViewModel = SharedViewModel()) {
         self.viewModel = viewModel
         observeCombinedState()
+        
     }
 
     private func observeCombinedState() {
         // Observe combined state from Kotlin
-        viewModel.observeCombinedState { [weak self] newState, newIsLoading in
+        viewModel.observeCombinedState { [weak self] isLoading, viewState in
             
             DispatchQueue.main.async {
-                self?.state = newState
-                self?.isLoading = newIsLoading.boolValue
-                
+                self?.isLoading = isLoading.boolValue
+                self?.viewState = viewState
+
                 print("observeCombinedState")
             }
         }
     }
 
-    // Methods to interact with the ViewModel
-    func setState(_ newValue: String) {
-        viewModel.setState(newValue: newValue)
+    func setMessage(_ message: String) {
+        viewModel.setMessage(newMessage: message)
+    }
+    
+    func incrementCount() {
+        let count = viewState.count as! Int + 1
+        viewModel.setCount(count: Int32(count))
     }
 
+    
     func setLoading(loading: Bool) {
         viewModel.setLoading(loading: loading)
     }

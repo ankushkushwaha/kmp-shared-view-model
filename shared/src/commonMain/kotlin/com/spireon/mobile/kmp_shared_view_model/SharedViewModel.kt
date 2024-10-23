@@ -12,20 +12,30 @@ import kotlinx.coroutines.launch
 class SharedViewModel {
     private val scope: CoroutineScope = MainScope()
 
-    private val _state = MutableStateFlow("Initial Value 1")
-    val state: StateFlow<String> = _state
+    private val _viewState = MutableStateFlow(
+        ViewState(
+            message = "Kotlin",
+            count = 2
+        )
+    )
+    val viewState: StateFlow<ViewState> = _viewState
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    fun setState(newValue: String) {
-        _state.value = newValue
-        println("Current state value: ${state.value}")
+    fun setMessage(newMessage: String) {
+        _viewState.value = _viewState.value.copy(message = newMessage)
+        println("=== Current message value: ${_viewState.value.message}")
+    }
+
+    fun setCount(count: Int) {
+        _viewState.value = _viewState.value.copy(count = count)
+        println("=== Current count value: ${_viewState.value.count}")
     }
 
     fun setLoading(loading: Boolean) {
         _isLoading.value = loading
-        println("Current isLoading value: ${isLoading.value}")
+        println("=== Current isLoading value: ${isLoading.value}")
     }
 
     fun updateIsLoadingAfterDelay() {
@@ -36,20 +46,34 @@ class SharedViewModel {
         }
     }
 
-    fun observeCombinedState(callback: (String, Boolean) -> Unit) {
+    fun observeCombinedState(callback: (Boolean, ViewState) -> Unit) {
         scope.launch {
-            combine(state, isLoading) { state,  isLoading ->
-                Pair(state, isLoading)
-            }.collect { (state, isLoading) ->
-                callback(state, isLoading)
+            combine(isLoading, viewState) { isLoading, viewState ->
+                Pair(isLoading, viewState)
+            }.collect { (isLoading, viewState) ->
+                callback(isLoading, viewState)
             }
         }
     }
 
     fun clear() {
         scope.cancel()
-        println("SharedViewModel MainScope cancelled")
+        println("=== SharedViewModel MainScope cancelled")
     }
 
-    data class Pair<A, B>(val first: A, val second: B)
+    data class Pair<A, B, C>(val first: A, val second: B, val third: C)
+
 }
+
+data class ViewState(
+    val message: String?  = null,
+    val count: Int? = null
+) {
+    companion object {
+        fun create(): ViewState {
+            return ViewState()
+        }
+    }
+}
+
+

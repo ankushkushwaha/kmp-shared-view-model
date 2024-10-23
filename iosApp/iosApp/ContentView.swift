@@ -26,13 +26,24 @@ struct DetailView: View {
     
     var body: some View {
         
-        Text(viewModel.state)
+        Text(viewModel.viewState.message ?? "")
             .padding(20)
         
-        Button("Update State") {
-            viewModel.setState(Date().timeIntervalSince1970.description)
+        Button("Update Message") {
+            viewModel.setMessage("Messsage: \(Date().timeIntervalSince1970.description)" )
         }
         .padding(.bottom, 100)
+        
+        
+        Text("\(viewModel.viewState.count)")
+            .padding(20)
+        
+        Button("Increment") {
+            viewModel.incrementCount()
+        }
+        .padding(.bottom, 100)
+        
+
         
         
         if viewModel.isLoading {
