@@ -35,7 +35,7 @@ struct DetailView: View {
         .padding(.bottom, 100)
         
         
-        Text("\(viewModel.viewState.count)")
+        Text("\(String(describing: viewModel.viewState.count))")
             .padding(20)
         
         Button("Increment") {
