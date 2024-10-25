@@ -35,7 +35,10 @@ struct DetailView: View {
         .padding(.bottom, 100)
         
         
-        Text("\(String(describing: viewModel.viewState.count))")
+        
+        let count = viewModel.viewState.count ?? 0
+        Text("\(count)")
+            .font(.title)
             .padding(20)
         
         Button("Increment") {
