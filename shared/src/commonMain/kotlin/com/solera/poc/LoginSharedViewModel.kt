@@ -11,7 +11,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginSharedViewModel: ViewModel() {
+class LoginSharedViewModel: ViewModel() { // class LoginSharedViewModel { // no subclassing with ViewModel()
     private val scope = viewModelScope // CoroutineScope(Dispatchers.Main)
 
     private val _viewState = MutableStateFlow(
