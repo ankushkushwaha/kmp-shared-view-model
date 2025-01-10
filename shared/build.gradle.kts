@@ -29,12 +29,21 @@ kotlin {
         all {
             languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
         }
+
+        androidMain.dependencies {
+            implementation("io.insert-koin:koin-android:3.2.0")
+        }
+
         commonMain.dependencies {
             api("com.rickclephas.kmp:kmp-observableviewmodel-core:1.0.0-BETA-7")
 
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+            implementation("io.insert-koin:koin-core:3.2.0")
+        }
 
+        commonTest.dependencies {
+            implementation("io.insert-koin:koin-test:3.2.0")
         }
     }
 }
