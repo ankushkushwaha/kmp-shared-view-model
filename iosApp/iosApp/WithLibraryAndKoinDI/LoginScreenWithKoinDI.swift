@@ -74,10 +74,6 @@ struct LoginScreenWithKoinDI: View {
                 ContentView()
             }
 
-            .onChange(of: username) { _ in
-                print("updateViewModel username")
-                viewModel.setUsername(usernme: username)
-            }
             .onChange(of: password) { _ in
                 print("updateViewModel password")
                viewModel.setPassword(password: password)
